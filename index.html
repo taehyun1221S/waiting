@@ -2609,6 +2609,7 @@ function setupRun(ch, keep) {
   $('phBrand').textContent = th.brand; placePlayer(); syncChip();
 }
 function startChapter(ch, mode) {
+  window.GameTracker && GameTracker.milestone(mode === 'endless' ? '무한 모드 시작' : '챕터 ' + ch + ' 시작', mode === 'endless' ? 5 : ch * 2 - 1);
   audioStart(); SFX.ui(); G.mode = mode || 'story';
   setState('loading'); $('loadMsg').textContent = `${THEMES[ch].place} — 줄 서는 중…`;
   setTimeout(() => {
@@ -2646,6 +2647,7 @@ function toTitle() {
 function pause() { if (G.state !== 'play') return; G.pauseAt = performance.now(); IN.mEyes = IN.mPhone = IN.tEyes = IN.tPhone = false; refreshFound(); $('pauseN').textContent = G.n; $('pauseMode').textContent = G.mode === 'endless' ? ` 무한 모드 · 도감 ${foundAll()}/${EV.length} · 연속 ${G.streak} · 품절 ${G.laps}회.` : ''; setState('pause'); unlockPointer(); }
 function resume() { if (G.state !== 'pause') return; setState('play'); lockPointer(); }
 function showClear() {
+  window.GameTracker && GameTracker.milestone('챕터 ' + G.ch + ' 클리어', G.ch * 2);
   const th = THEMES[G.ch], tot = poolFor(G.ch).length;
   G.save.cleared[G.ch] = true; if (!G.save.best[G.ch] || G.runT < G.save.best[G.ch]) G.save.best[G.ch] = Math.round(G.runT); storeSave();
   $('clearItem').textContent = th.item; $('clearTime').textContent = fmtTime(G.runT); $('clearResets').textContent = `${G.resets}회 / ${G.cuts}회`;
@@ -2811,5 +2813,7 @@ boot();
 
 })();
 </script>
+<!-- 게임 분석 트래커 (game-analytics) -->
+<script src="https://sunny8197783.github.io/game-analytics/tracker/game-tracker.js" data-game="waiting" data-url="https://okrgwnvlsissnenkznhf.supabase.co" data-key="sb_publishable_LiRvhvhJk1Gb0icL9RJ7vA_uO4Ckf13"></script>
 </body>
 </html>
